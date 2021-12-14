@@ -13,6 +13,7 @@ import { GetProductWithSomeDto } from './dto/get-product-with-some.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { NewProductDto } from './dto/new-product-dto';
 import { AnalogProductDto } from './dto/analog-product-dto';
+import { CompatibilityDto } from './dto/compatibility-dto';
 
 @Controller('products')
 export class ProductsController {
@@ -42,10 +43,11 @@ export class ProductsController {
   findAnalog(@Body() analogProductDto: AnalogProductDto) {
     return this.productsService.findAnalog(analogProductDto);
   }
-  // @Post('find_place')
-  // findOne() {
-  //   return this.productsService.findAll();
-  // }
+
+  @Post('compatibility')
+  compatibilityWithComp(@Body() compatibilityDto: CompatibilityDto) {
+    return this.productsService.compatibilityWithComp(compatibilityDto);
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

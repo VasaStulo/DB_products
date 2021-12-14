@@ -1,3 +1,4 @@
+<script src="../../../backend/src/products/products.service.ts"></script>
 <script src="../../../backend/src/products/dto/create-product.dto.ts"></script>
 <template>
   <div class="add_container">

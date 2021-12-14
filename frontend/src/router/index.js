@@ -5,6 +5,7 @@ import FindProduct from '../views/FindProduct';
 import AddProgram from '../views/AddProgram';
 import AnalogProduct from '../views/AnalogProduct';
 import FindByFeature from '../views/FindByFeature';
+import Compatibility from '../views/Compatibility';
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: '/findByFeature',
     name: 'findByFeature',
     component: FindByFeature
+  },
+  {
+    path: '/compatibility',
+    name: 'compatibility',
+    component: Compatibility
   }
 ];
 

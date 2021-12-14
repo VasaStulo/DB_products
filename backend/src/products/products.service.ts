@@ -16,6 +16,7 @@ import { NewProductDto } from './dto/new-product-dto';
 import { CategoryService } from '../category/category.service';
 import { ManufacturerService } from '../manufacturer/manufacturer.service';
 import { log } from 'util';
+import { CompatibilityDto } from './dto/compatibility-dto';
 
 @Injectable()
 export class ProductsService {
@@ -105,7 +106,6 @@ export class ProductsService {
       throw new NotFoundException();
     }
   }
-  //TODO ЕСЛИ ЧТО ТО СОВПАДЕТ У ОДНОГО ОБЪЕКТА И ЧТО ТО У ДРУГОГО
 
   //
   // async update(product_id: number, updateProductDto: UpdateProductDto) {
@@ -194,6 +194,52 @@ export class ProductsService {
         ],
       });
       return res;
+    } catch (ex) {
+      throw new NotFoundException();
+    }
+  }
+
+  //5 пункт
+  async compatibilityWithComp(compatibilityDto) {
+    try {
+      const obj: any = {};
+      // const prod: any = {};
+      const { name, memory, min_ram } = compatibilityDto;
+      for (const el in compatibilityDto) {
+        obj[el] = compatibilityDto[el];
+      }
+      console.log(obj);
+      const prod = await this.productRepository.findOne({
+        where: {
+          name,
+        },
+        attributes: ['memory', 'min_ram'],
+      });
+      console.log(prod.memory);
+      let msgOk = '';
+      let msgMem = '';
+      let msgMin = '';
+      let msgErr = '';
+      let flag = false;
+      let flag_2 = false;
+      if (obj.memory >= prod.memory) {
+        flag = true;
+      } else {
+        const need_mem = prod.memory - obj.memory;
+        msgMem = `Вам не хватает ${need_mem} Мб памяти`;
+      }
+      if (obj.min_ram >= prod.min_ram) {
+        flag_2 = true;
+      } else {
+        const need_min = prod.min_ram - obj.min_ram;
+        msgMin = `Вам не хватает ${need_min} Мб оперативной памяти`;
+      }
+      if (flag == true && flag_2 == true) {
+        msgOk = 'Продукт полностью совместим с вашим компьютером!';
+      } else {
+        msgErr = 'Продукт не совместим с вашим компьютером!';
+      }
+      return [msgOk, msgErr, msgMem, msgMin];
     } catch (ex) {
       throw new NotFoundException();
     }

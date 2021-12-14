@@ -38,6 +38,11 @@
               >Найти по описанию</v-list-item-title
             >
           </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="$router.push('/compatibility')"
+              >Проверить совместимость</v-list-item-title
+            >
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
