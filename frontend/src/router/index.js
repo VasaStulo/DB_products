@@ -6,6 +6,7 @@ import AddProgram from '../views/AddProgram';
 import AnalogProduct from '../views/AnalogProduct';
 import FindByFeature from '../views/FindByFeature';
 import Compatibility from '../views/Compatibility';
+import SuitableProduct from '../views/SuitableProduct';
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: '/compatibility',
     name: 'compatibility',
     component: Compatibility
+  },
+  {
+    path: '/suitable_product',
+    name: 'suitable_product',
+    component: SuitableProduct
   }
 ];
 

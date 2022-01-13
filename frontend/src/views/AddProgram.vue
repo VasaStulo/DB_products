@@ -72,11 +72,12 @@
         <v-btn color="blue darken-1" text @click.prevent="$router.push('/')">
           Назад
         </v-btn>
-        <v-btn color="blue darken-1" text @click.prevent="createNewProduct">
+        <v-btn color="blue darken-1" text @click.prevent="createNewProduct()">
           Добавить
         </v-btn>
         <p class="err">{{ errorNumMsg }}</p>
         <p class="ok">{{ succesMsg }}</p>
+        <p class="err">{{ msgEmpty }}</p>
       </v-container>
     </v-form>
   </div>
@@ -89,6 +90,8 @@ export default {
     return {
       errorNumMsg: '',
       succesMsg: '',
+      msgEmpty: '',
+      errorMsg: '',
       memory: '',
       cost: '',
       disk: '',
@@ -107,13 +110,29 @@ export default {
         this.errorNumMsg =
           'Поля Стоимость,Память и Оперативная память должны состоять из цифр!';
       else this.errorNumMsg = '';
+      if (
+        this.cost == '' ||
+        this.memory == '' ||
+        this.min_ram == '' ||
+        this.product_name == '' ||
+        this.category_name == '' ||
+        this.manufacturer_name == '' ||
+        this.disk == ''
+      )
+        this.msgEmpty = 'Все поля должны быть заполнены!';
+      else this.msgEmpty = '';
     },
 
     async createNewProduct() {
       this.validateForm();
-      if (this.errorMsg == '' && this.errorNumMsg == '') {
+      if (
+        this.errorMsg == '' &&
+        this.errorNumMsg == '' &&
+        this.msgEmpty == ''
+      ) {
         this.succesMsg = 'Продукт успешно добавлен!';
         try {
+          // console.log('ef');
           const response = await fetch(
             'http://localhost:5000/products/add_program',
             {

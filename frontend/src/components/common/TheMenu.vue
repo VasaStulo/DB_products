@@ -16,6 +16,11 @@
           active-class="deep-purple--text text--accent-4"
         >
           <v-list-item>
+            <v-list-item-title @click="$router.push('/')"
+              >Главная</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
             <v-list-item-title @click="$router.push('/findProduct')"
               >Найти местоположение</v-list-item-title
             >
@@ -41,6 +46,16 @@
           <v-list-item>
             <v-list-item-title @click="$router.push('/compatibility')"
               >Проверить совместимость</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="$router.push('/suitable_product')"
+              >Наиболее подходящий продукт</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="$router.push('/suitable_product')"
+              >Варианты комплектации</v-list-item-title
             >
           </v-list-item>
         </v-list-item-group>

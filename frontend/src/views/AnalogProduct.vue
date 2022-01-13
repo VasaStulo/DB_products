@@ -21,7 +21,13 @@
         <v-btn color="blue darken-1" text @click="getProductAnalog()">
           Найти
         </v-btn>
-        <div class="cards-container">
+        <div class="er" v-if="emptError">
+          <p>К сожалению, аналога к данной программе не существует!</p>
+        </div>
+        <div v-if="error" class="er">
+          <p>Такого продукта не существует!</p>
+        </div>
+        <div class="cards-container" v-if="!emptError && status">
           <v-card
             v-for="pr in product"
             :key="pr.id"
@@ -51,8 +57,9 @@ export default {
   data() {
     return {
       product_name: '',
-      error: false,
+      emptError: false,
       status: false,
+      error: false,
       product: [],
       valid: false,
       nameRules: [(v) => !!v || 'Поле не должно быть пустым!']
@@ -65,29 +72,36 @@ export default {
   },
   methods: {
     async getProductAnalog() {
+      this.error = false;
+      this.emptError = false;
+      this.status = true;
+
       try {
         const response = await fetch(
           'http://localhost:5000/products/analog_product',
           {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            credentials: 'same-origin', // include, *same-origin, omit
+            method: 'POST',
+            credentials: 'same-origin',
             headers: {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              product_name: this.product_name
+              product_name:
+                this.product_name.charAt(0).toUpperCase() +
+                this.product_name.slice(1)
             })
           }
         );
         this.product = await response.json();
         console.log(this.product);
         if (this.product.length === 0 || this.product.statusCode == 404) {
-          this.status = false;
           this.error = true;
+          this.status = false;
           return;
         }
-        this.status = true;
-        this.error = false;
+        if (this.product.length === 1) {
+          this.emptError = true;
+        }
       } catch (e) {
         console.log(e);
       }
@@ -103,5 +117,8 @@ h2 {
 .cards-container {
   margin-top: 20px;
   display: flex;
+}
+.er {
+  color: red;
 }
 </style>

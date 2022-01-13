@@ -14,6 +14,7 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { NewProductDto } from './dto/new-product-dto';
 import { AnalogProductDto } from './dto/analog-product-dto';
 import { CompatibilityDto } from './dto/compatibility-dto';
+import { SuitableDto } from './dto/suitable-dto';
 
 @Controller('products')
 export class ProductsController {
@@ -49,6 +50,10 @@ export class ProductsController {
     return this.productsService.compatibilityWithComp(compatibilityDto);
   }
 
+  @Post('suitable_product')
+  FindSuitableProduct(@Body() suitableDto: SuitableDto) {
+    return this.productsService.FindSuitableProduct(suitableDto);
+  }
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.productsService.findOne(+id);

@@ -46,8 +46,8 @@
           <p>Дополнительная информация:</p>
           <p>Категория: {{ product.category.name }}</p>
           <p>Производитель: {{ product.manufacturer.name }}</p>
-          <p>Память: {{ product.memory }}</p>
-          <p>Объем оперативной памяти: {{ product.min_ram }}</p>
+          <p>Память: {{ product.memory }} Мб</p>
+          <p>Объем оперативной памяти: {{ product.min_ram }} Мб</p>
           <p>Cтоимость: {{ product.cost }} руб.</p>
         </div>
       </v-container>
@@ -81,17 +81,22 @@ export default {
         const response = await fetch(
           'http://localhost:5000/products/find_place',
           {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            credentials: 'same-origin', // include, *same-origin, omit
+            method: 'POST',
+            credentials: 'same-origin',
             headers: {
               'Content-Type': 'application/json'
-              // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: JSON.stringify({
-              product_name: this.product_name,
-              category_name: this.category_name,
-              manufacturer_name: this.manufacturer_name
-            }) // body data type must match "Content-Type" header
+              product_name:
+                this.product_name.charAt(0).toUpperCase() +
+                this.product_name.slice(1),
+              category_name:
+                this.category_name.charAt(0).toUpperCase() +
+                this.category_name.slice(1),
+              manufacturer_name:
+                this.manufacturer_name.charAt(0).toUpperCase() +
+                this.manufacturer_name.slice(1)
+            })
           }
         );
         this.product = await response.json();

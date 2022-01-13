@@ -8,7 +8,7 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from './entities/products.model';
-import { UniqueConstraintError } from 'sequelize';
+import { Op, UniqueConstraintError } from 'sequelize';
 import { Manufacturer } from '../manufacturer/entities/manufacturer.model';
 import { Category } from '../category/entities/category.model';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -26,20 +26,21 @@ export class ProductsService {
     private manufacturerService: ManufacturerService,
   ) {}
 
-  // 2 пункт тз
-  async createProduct(dto: NewProductDto) {
+  async createProduct(newProductDto) {
     try {
       const product = new Product();
-      product.name = dto.product_name;
-      product.cost = dto.cost;
-      product.disk = dto.disk;
-      product.memory = dto.memory;
-      product.min_ram = dto.min_ram;
-      const category = await this.categoryService.upsert(dto.category_name);
+      product.name = newProductDto.product_name;
+      product.cost = newProductDto.cost;
+      product.disk = newProductDto.disk;
+      product.memory = newProductDto.memory;
+      product.min_ram = newProductDto.min_ram;
+      const category = await this.categoryService.upsert(
+        newProductDto.category_name,
+      );
       console.log(category);
       const category_id = category[0].id;
       const manufacturer = await this.manufacturerService.upsert(
-        dto.manufacturer_name,
+        newProductDto.manufacturer_name,
       );
       console.log(category);
       const manufacturer_id = manufacturer[0].id;
@@ -240,6 +241,46 @@ export class ProductsService {
         msgErr = 'Продукт не совместим с вашим компьютером!';
       }
       return [msgOk, msgErr, msgMem, msgMin];
+    } catch (ex) {
+      throw new NotFoundException();
+    }
+  }
+  //6 пункт
+  async FindSuitableProduct(suitableDto) {
+    try {
+      const obj: any = {};
+      const { memory, min_ram, cost } = suitableDto;
+      for (const el in suitableDto) {
+        obj[el] = suitableDto[el];
+      }
+      // console.log(obj);
+      const prod = await this.productRepository.findAll({
+        raw: true,
+        where: {
+          cost: { [Op.lte]: obj.cost },
+          memory: { [Op.lte]: obj.memory },
+          min_ram: { [Op.lte]: obj.min_ram },
+        },
+        attributes: ['disk', 'name', 'memory', 'min_ram', 'cost'],
+        include: [
+          {
+            model: Manufacturer,
+            attributes: ['name'],
+          },
+          {
+            model: Category,
+            attributes: ['name'],
+          },
+        ],
+      });
+
+      const sortedProd = prod.sort(function (a, b) {
+        return a.memory - b.memory || a.cost - b.cost || a.min_ram - b.min_ram;
+      });
+      // console.log(sortedProd[0]);
+      // for (const it of prod) {
+      // }
+      return sortedProd[0];
     } catch (ex) {
       throw new NotFoundException();
     }

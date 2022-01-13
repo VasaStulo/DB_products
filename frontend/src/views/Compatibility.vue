@@ -36,7 +36,7 @@
           Назад
         </v-btn>
         <v-btn color="blue darken-1" text @click.prevent="CheckCompatibility()">
-          Найти
+          Проверить
         </v-btn>
         <v-alert v-if="error" dense outlined type="error">
           Программы с такими параметрами не существует!
@@ -52,7 +52,7 @@
 </template>
 <script>
 export default {
-  name: 'createNewProduct',
+  name: 'CheckCompatibility',
   data() {
     return {
       errorNumMsg: '',

@@ -12,6 +12,13 @@ import { Manufacturer } from '../../manufacturer/entities/manufacturer.model';
 
 @Table({ tableName: 'products', timestamps: false })
 export class Product extends Model<Product> {
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  id: number;
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
 
@@ -27,7 +34,6 @@ export class Product extends Model<Product> {
   @Column({ type: DataType.DOUBLE, allowNull: false })
   min_ram: number;
 
-  //
   @ForeignKey(() => Manufacturer)
   @Column
   manufacturer_id: number;
