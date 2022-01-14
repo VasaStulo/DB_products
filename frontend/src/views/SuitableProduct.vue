@@ -46,26 +46,21 @@
         >
           Найти
         </v-btn>
-        <v-alert v-if="error" dense outlined type="error">
+        <p class="er">{{ errorNumMsg }}</p>
+        <v-alert v-if="error" class="er">
           Для заданных параментров не удалось найти подходящего продукта!
         </v-alert>
         <div class="cards-container" v-if="status">
-          <v-card
-            v-for="pr in suiProduct"
-            :key="pr.id"
-            class="mx-auto card"
-            max-width="344"
-          >
+          <v-card class="mx-auto card" max-width="344">
             <v-card-text>
-              <div>{{ pr.category.name }}</div>
+              <div>{{ suiProduct.category && suiProduct.category.name }}</div>
               <p class="text-h4 text--primary">
-                {{ pr.name }}
+                {{ suiProduct.name }}
               </p>
               <div class="text--primary">
-                <p>Производитель: {{ pr.manufacturer.name }}</p>
-                <p>Память: {{ pr.memory }}</p>
-                <p>Объем оперативной памяти: {{ pr.min_ram }}</p>
-                <p>Cтоимость: {{ pr.cost }} руб.</p>
+                <p>Память: {{ suiProduct.memory }}</p>
+                <p>Объем оперативной памяти: {{ suiProduct.min_ram }}</p>
+                <p>Cтоимость: {{ suiProduct.cost }} руб.</p>
               </div>
             </v-card-text>
           </v-card>
@@ -87,7 +82,7 @@ export default {
       error: false,
       status: false,
       name: '',
-      suiProduct: [],
+      suiProduct: {},
       nameRules: [(v) => !!v || 'Поле не должно быть пустым!']
     };
   },
@@ -132,7 +127,7 @@ export default {
           ) {
             this.error = true;
             this.status = false;
-            console.log('мда');
+            console.log(this.suiProduct.length);
             return;
           }
         } catch (e) {
@@ -148,9 +143,7 @@ h2 {
   text-align: center;
   margin-top: 30px;
 }
-.prog {
-  margin-top: 50px;
-  padding: 10px;
-  border: 4px double cornflowerblue;
+.er {
+  color: red;
 }
 </style>

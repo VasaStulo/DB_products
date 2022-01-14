@@ -68,6 +68,9 @@
       <v-btn color="blue darken-1" text @click.prevent="findByFeature()">
         Найти
       </v-btn>
+      <v-alert v-if="error" class="err">
+        Под эти описания не удалось найти подходящего продукта!
+      </v-alert>
       <p class="err">{{ errorMsg }}</p>
       <div class="cards-container">
         <v-card

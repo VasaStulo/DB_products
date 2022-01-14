@@ -107,17 +107,6 @@ export class ProductsService {
       throw new NotFoundException();
     }
   }
-
-  //
-  // async update(product_id: number, updateProductDto: UpdateProductDto) {
-  //   try {
-  //     return await this.productRepository.update(updateProductDto, {
-  //       where: { product_id },
-  //     });
-  //   } catch (e) {
-  //     throw new ConflictException();
-  //   }
-  // }
   //пункт 3
   async findAnalog(analogProductDto) {
     try {
@@ -277,9 +266,6 @@ export class ProductsService {
       const sortedProd = prod.sort(function (a, b) {
         return a.memory - b.memory || a.cost - b.cost || a.min_ram - b.min_ram;
       });
-      // console.log(sortedProd[0]);
-      // for (const it of prod) {
-      // }
       return sortedProd[0];
     } catch (ex) {
       throw new NotFoundException();
